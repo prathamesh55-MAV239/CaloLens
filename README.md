@@ -1,7 +1,14 @@
 # CaloLens 🥗📸
 
-> **AI-Powered Meal & Nutrition Estimator**  
-> Snap a photo of your meal to get instant, AI-generated estimates of food items, portion sizes, calories, and macronutrient breakdowns.
+> **Next-Gen AI Food & Nutrition Estimator**  
+> Snap or upload any meal photo to get instant, AI-powered nutritional estimates, portion sizes, calories, and macronutrient breakdowns in a warm, premium visual experience.
+
+[![Next.js](https://img.shields.io/badge/Next.js-15.1-black?style=flat&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.0-61DAFB?style=flat&logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?style=flat&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=flat&logo=tailwind-css)](https://tailwindcss.com/)
+[![Gemini Vision](https://img.shields.io/badge/Google_Gemini-2.5_Flash-orange?style=flat&logo=google)](https://ai.google.dev/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
 
@@ -13,26 +20,52 @@
 
 ---
 
-## ✨ Features (MVP)
+## 🎨 Distinctive Visual Design System
 
-- 📸 **Smart Image & Camera Capture**: Upload or take live food photos on mobile or desktop with automatic client-side image compression.
-- 🧪 **Sample Testing Mode**: Test the complete estimation, saving, and history workflow instantly without consuming API credits.
-- ⚡ **AI Vision Analysis**: Identifies dishes, portion estimates, calorie approximations, and macronutrients (Protein, Carbs, Fat, Fiber) powered by Google Gemini Vision.
-- ✏️ **Manual Meal & Portion Editing**: Tweak identified dish titles, add or remove ingredients, and adjust calories/macros before saving with automatic total recalculation.
-- 🎯 **Daily Nutrition Goals Tracker**: Set personal daily targets for calories, protein, carbs, and fat with real-time remaining calorie indicators.
-- 🏷️ **Meal Categorization**: Categorize entries into Breakfast, Lunch, Dinner, and Snack with date-grouped timeline views.
-- 🔬 **USDA Cross-Reference**: Optionally cross-checks AI estimates against USDA FoodData Central nutritional reference data (per 100g values) for grounded accuracy.
-- 💾 **Local-First Meal History**: Save meals and review a chronological log of past dishes, nutritional breakdowns, personal notes, and timestamps.
-- 📱 **Responsive Mobile-First UI**: Optimized for phones and desktops alike with quick navigation tabs and full item details.
-- 📊 **Data Sources Transparency**: In-app collapsible panel showing all active models and data sources, with links to full source registry.
+CaloLens features an authoritative, appetizing visual identity crafted with warm orange, ivory, and deep-red tones, paired with bold condensed display typography:
+
+### Color Palette Tokens
+| Token | Hex | Role |
+|---|---|---|
+| **Cream Background** | `#FFF8EC` | Primary page canvas |
+| **Warm Ivory** | `#FFF3DF` | Elevated card surfaces and containers |
+| **Main Warm Orange** | `#FF990F` | Brand badges, primary highlights, and energy accents |
+| **Bright Orange** | `#FFA82F` | Hover accents and gradient highlights |
+| **Light Orange** | `#FFE1AC` | Soft container borders and dividers |
+| **Deep Burnt Red** | `#8D240D` | Headlines, titles, and key metrics |
+| **Primary Strong Red** | `#B30D08` | Primary CTA buttons and high-priority actions |
+| **Golden Yellow** | `#FFC84B` | Secondary indicators, macro bars, and tags |
+| **Primary Text** | `#65230F` | Warm dark-brown body text |
+| **Secondary Text** | `#8E513F` | Muted descriptions and secondary labels |
+
+### Typography & Component Styling
+- **Display Typography**: **Barlow Condensed** (with Oswald / Impact fallbacks) — bold, condensed, uppercase tracking for headlines and numerical metrics.
+- **Body Font**: **Plus Jakarta Sans** — warm, clean, readable sans-serif for descriptions and controls.
+- **Card Anatomy**: Generously rounded corners (`rounded-3xl` and `rounded-2xl`), subtle borders (`#FFE1AC`), and soft warm elevation shadows (`shadow-warm`).
+- **Pill Controls**: Soft pill buttons (`rounded-full`) for high-contrast primary actions (`#B30D08`) and warm secondary actions.
+
+---
+
+## ✨ Features
+
+- 📸 **Live AI Food & Plate Scanning**: Take a live photo on mobile or upload an image on desktop with automatic client-side canvas compression.
+- ⚡ **Resilient Gemini Vision Cascade**: Server-side multimodal vision powered primarily by `gemini-2.5-flash-lite`, with automatic fallback to `gemini-3.8-flash` and `gemini-flash-latest`.
+- ✏️ **Manual Meal & Portion Adjuster**: In-line editing to rename meals, adjust ingredient portions, add missing sides, or delete items — with **real-time automatic recalculation** of total calories and macronutrients.
+- 🎯 **Daily Nutrition Goals Tracker**: Interactive daily progress bar comparing consumed calories against personal targets, with real-time remaining calorie alerts and macro bars (Protein, Carbs, Fat).
+- 🏷️ **Meal Categorization**: Auto-suggests and allows manual tagging for **Breakfast**, **Lunch**, **Dinner**, and **Snack**.
+- 📅 **Date-Grouped Meal History**: Chronological log organized under **Today**, **Yesterday**, and calendar dates, with daily cumulative calorie headers and personal notes editing.
+- 🔬 **USDA FoodData Central Integration**: Automatically cross-references detected food items with USDA reference standards (per 100g values) for grounded nutritional accuracy.
+- 📱 **Mobile & Desktop Responsive**: Native mobile camera capture (`capture="environment"`), floating bottom mobile navigation bar, and multi-column desktop layout.
+- 🧪 **Offline Sample Mode**: Toggle sample data anytime to test the complete estimation and saving flow without consuming API quota.
+- 📊 **In-App Data Sources Registry**: Collapsible transparency panel mapping active and benchmark data sources directly from [`SOURCES.md`](SOURCES.md).
 
 ---
 
 ## 🚀 Quickstart & Setup
 
 ### Prerequisites
-- **Node.js**: v18.0.0 or higher (v20+ / v24 recommended)
-- **npm** (or pnpm / yarn)
+- **Node.js**: `v18.0.0` or higher (`v20+` or `v24` recommended)
+- **npm** (or `pnpm` / `yarn`)
 
 ### 1. Clone & Install Dependencies
 ```bash
@@ -40,7 +73,7 @@ git clone https://github.com/prathamesh55-MAV239/CaloLens.git
 cd CaloLens
 npm install
 ```
-*(On Windows PowerShell, use `npm.cmd install` if execution policy is restricted).*
+*(On Windows PowerShell, use `npm.cmd install` if script execution policy is restricted).*
 
 ### 2. Configure Environment Variables
 Copy `.env.example` to `.env.local`:
@@ -48,17 +81,21 @@ Copy `.env.example` to `.env.local`:
 cp .env.example .env.local
 ```
 
-Edit `.env.local` and add your API keys:
+Add your API keys to `.env.local`:
 ```env
-# Get your Gemini API key from Google AI Studio: https://aistudio.google.com/app/apikey
+# Google Gemini API Key for Server-Side AI Vision Analysis
+# Obtain your key from Google AI Studio: https://aistudio.google.com/app/apikey
 GEMINI_API_KEY=your_actual_gemini_api_key
 
-# (Optional) USDA FoodData Central API key for cross-referencing nutrition data
-# Get your key from: https://fdc.nal.usda.gov/api-key-signup.html
+# (Optional) USDA FoodData Central API Key for nutritional cross-referencing
+# Obtain your key from: https://fdc.nal.usda.gov/api-key-signup.html
 USDA_API_KEY=your_usda_api_key
+
+# Application URL
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
-> **Security Note:** Never commit `.env.local` or real API keys to Git. Keep real secrets in your deployment hosting provider's settings (e.g., Vercel, Netlify).
+> **Security Note:** `.env.local` is gitignored. Never commit real API keys to version control. Set environment variables directly in your hosting provider's dashboard (e.g., Vercel, Netlify).
 
 ### 3. Run Development Server
 ```bash
@@ -79,18 +116,18 @@ CaloLens follows a disciplined, thin end-to-end iteration loop:
 Make a small change ➔ Test locally ➔ Open a PR ➔ Preview deployment ➔ Merge to main ➔ Check live app
 ```
 
-1. **Feature Branches**: Create a dedicated branch for each change (`git checkout -b feature/<name>`).
-2. **Local Verification**: Run type-checks, lint, and build:
+1. **Feature Branches**: Create a branch for each change (`git checkout -b feature/<name>`).
+2. **Local Verification**: Run linting and production build checks:
    ```bash
    npm run lint
    npm run build
    ```
-3. **Pull Request & Preview**: Open a PR on GitHub. Test the automated preview deployment URL on both mobile and desktop.
-4. **Merge & Live Smoke Check**: Merge to `main`, verify production deployment, and confirm photo upload, nutrition display, and history persistence.
+3. **Pull Request & Preview**: Open a PR on GitHub to trigger automated preview deployments on Vercel/Netlify.
+4. **Merge & Live Smoke Check**: Merge to `main`, verify production deployment, and confirm photo upload, live estimation, editing, and history persistence.
 
 ---
 
-## 📂 Project Structure
+## 📂 Project Architecture
 
 ```
 CaloLens/
@@ -98,57 +135,58 @@ CaloLens/
 ├── src/
 │   ├── app/
 │   │   ├── api/analyze-meal/route.ts  # Server-side Gemini Vision + USDA API route
-│   │   ├── globals.css                # Tailwind styling
-│   │   ├── layout.tsx                 # Root layout with metadata
-│   │   └── page.tsx                   # Main page orchestrating scan & history
+│   │   ├── globals.css                # Warm palette, typography, and utility styling
+│   │   ├── layout.tsx                 # Root layout with Google font preloads & metadata
+│   │   └── page.tsx                   # Main orchestrator (hero, scan, history, mobile nav)
 │   ├── components/
+│   │   ├── DailyGoalTracker.tsx       # Daily calorie & macro target card with modal editor
 │   │   ├── DataSourcesBadge.tsx       # Collapsible data source attribution panel
-│   │   ├── DisclaimerBanner.tsx       # Mandatory non-medical advice banners
-│   │   ├── ImageUploader.tsx          # Camera / photo upload & sample mode
-│   │   ├── MealHistory.tsx            # Meal log, details modal & deletion
-│   │   ├── MealNutritionCard.tsx      # Calories, macro bars, USDA refs & ingredient table
-│   │   └── Navbar.tsx                 # Sticky navigation header
+│   │   ├── DisclaimerBanner.tsx       # Non-medical advice disclaimer banners
+│   │   ├── ImageUploader.tsx          # Camera capture, file upload, & sample mode
+│   │   ├── MealHistory.tsx            # Date-grouped meal timeline, notes modal & filters
+│   │   ├── MealNutritionCard.tsx      # Calories, macro bars, in-line editor & USDA badges
+│   │   └── Navbar.tsx                 # Warm ivory sticky header with pill navigation
 │   ├── lib/
-│   │   ├── dataSources.ts             # All models & datasets from SOURCES.md
-│   │   ├── mockData.ts                # Offline sample meal dataset
-│   │   ├── storage.ts                 # Local storage persistence
+│   │   ├── dataSources.ts             # Registry mapping models from SOURCES.md
+│   │   ├── mockData.ts                # Offline sample dish dataset
+│   │   ├── storage.ts                 # Local storage persistence & daily statistics
 │   │   └── usda.ts                    # USDA FoodData Central API client
 │   └── types/
 │       └── meal.ts                    # TypeScript domain definitions
 ├── .env.example                       # Environment template
 ├── package.json                       # Dependencies & scripts
 ├── tsconfig.json                      # TypeScript configuration
-├── tailwind.config.ts                 # Tailwind configuration
+├── tailwind.config.ts                 # Custom Envato design system tokens & fonts
 └── README.md                          # Documentation
 ```
 
 ---
 
-## 🔬 Data Sources & Models
+## 🔬 Data Sources & Models Registry
 
-CaloLens uses a structured source registry ([`SOURCES.md`](SOURCES.md)) to track all models, datasets, and data providers. Each source has a documented license status and MVP approval decision.
+CaloLens maintains a strict source and license registry in [`SOURCES.md`](SOURCES.md).
 
-### Active in MVP
-
-| Source | Role | Status |
-|---|---|---|
-| **Google Gemini Vision** (`gemini-1.5-flash`) | Primary AI model for food recognition, portion estimation, and nutritional breakdown | ✅ Active |
-| **USDA FoodData Central** | Government nutrition reference database for cross-referencing calorie and macronutrient estimates | ✅ Active (Approved) |
-
-### Evaluation & Future Sources
+### Active in Production
 
 | Source | Role | Status |
 |---|---|---|
-| Food-101 | Dish recognition baseline (101 categories) | 🔬 Evaluation |
-| UECFood-256 | Japanese dish recognition benchmark (256 categories) | 🔬 Evaluation |
-| Nutrition5k | Calorie/macronutrient benchmark | 🔬 Evaluation |
-| Open Food Facts | OCR/layout experiments for packaged food labels | 🔬 Evaluation |
-| January/food-vision-v1 | Baseline food vision model | 🔬 Evaluation |
-| AI4Food-NutritionDB, OmniFood8K, FooDD | Future benchmarks | ⏸️ Hold |
+| **Google Gemini Vision** (`gemini-2.5-flash-lite`, `gemini-3.8-flash`) | Multimodal food identification, portion estimation, and macronutrient breakdown | ✅ Active |
+| **USDA FoodData Central** | Standard government reference database for per-100g calorie and nutrient cross-referencing | ✅ Active (Approved) |
 
-> See [`SOURCES.md`](SOURCES.md) for the full registry with links, license terms, and legal review requirements.
+### Evaluation & Benchmark Catalog
+
+| Source | Role | Status |
+|---|---|---|
+| **Food-101** | Dish recognition baseline dataset (101 categories) | 🔬 Evaluation |
+| **UECFood-256** | Japanese dish recognition benchmark (256 categories) | 🔬 Evaluation |
+| **Nutrition5k** | Calorie and macronutrient estimation benchmark | 🔬 Evaluation |
+| **Open Food Facts** | OCR and layout experiments for packaged food labels | 🔬 Evaluation |
+| **January/food-vision-v1** | Baseline food vision model for benchmark comparison | 🔬 Evaluation |
+| **AI4Food-NutritionDB, OmniFood8K, FooDD** | Future evaluation references | ⏸️ Hold |
+
+> For licensing terms, commercial-use determinations, and legal requirements, consult [`SOURCES.md`](SOURCES.md).
 
 ---
 
 ## 📄 License
-MIT License - see [LICENSE](LICENSE) for details.
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
