@@ -59,15 +59,7 @@ export async function POST(req: NextRequest) {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    // Use gemini-1.5-flash for fast, accurate multimodal vision
-    const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
-      generationConfig: {
-        responseMimeType: "application/json",
-        temperature: 0.2,
-      },
-    });
-
+    
     const imagePart = {
       inlineData: {
         data: image,
@@ -75,8 +67,40 @@ export async function POST(req: NextRequest) {
       },
     };
 
-    const result = await model.generateContent([PROMPT_INSTRUCTIONS, imagePart]);
-    const responseText = result.response.text();
+    // Candidate vision models in order of latency and availability
+    const CANDIDATE_MODELS = [
+      "gemini-2.5-flash-lite",
+      "gemini-3.8-flash",
+      "gemini-flash-latest",
+    ];
+
+    let responseText = "";
+    let lastError: any = null;
+
+    for (const modelName of CANDIDATE_MODELS) {
+      try {
+        const model = genAI.getGenerativeModel({
+          model: modelName,
+          generationConfig: {
+            responseMimeType: "application/json",
+            temperature: 0.2,
+          },
+        });
+
+        const result = await model.generateContent([PROMPT_INSTRUCTIONS, imagePart]);
+        responseText = result.response.text();
+        if (responseText) {
+          break;
+        }
+      } catch (err: any) {
+        console.warn(`Vision model ${modelName} failed, trying next candidate:`, err.message);
+        lastError = err;
+      }
+    }
+
+    if (!responseText) {
+      throw lastError || new Error("Failed to analyze food image with Gemini vision models.");
+    }
 
     let parsed;
     try {
