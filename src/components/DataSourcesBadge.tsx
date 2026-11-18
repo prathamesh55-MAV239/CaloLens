@@ -22,55 +22,55 @@ export function DataSourcesBadge({
   const registrySources = showFullRegistry ? ALL_SOURCES : [];
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-slate-50/60 overflow-hidden">
+    <div className="rounded-2xl border border-[#FFE1AC] bg-[#FFF8EC] overflow-hidden shadow-warm-sm">
       {/* Header */}
       <button
         type="button"
         onClick={() => setExpanded(!expanded)}
-        className="flex w-full items-center justify-between px-4 py-2.5 text-xs hover:bg-slate-100/60 transition"
+        className="flex w-full items-center justify-between px-4 py-3 text-xs hover:bg-[#FFF3DF] transition"
       >
-        <div className="flex items-center gap-2 text-slate-600">
-          <Database className="h-3.5 w-3.5 text-slate-400" />
-          <span className="font-semibold">Data Sources & Models</span>
-          <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 border border-emerald-200">
+        <div className="flex items-center gap-2.5 text-[#8D240D]">
+          <Database className="h-4 w-4 text-[#FF990F]" />
+          <span className="font-display text-sm font-black uppercase tracking-wide">Data Sources &amp; Models Registry</span>
+          <span className="rounded-full bg-[#FFE1AC] px-2.5 py-0.5 text-[10px] font-bold text-[#8D240D] border border-[#F9A83B]/30">
             {sources.filter((s) => s.status === "active").length} active
           </span>
         </div>
         {expanded ? (
-          <ChevronUp className="h-3.5 w-3.5 text-slate-400" />
+          <ChevronUp className="h-4 w-4 text-[#8E513F]" />
         ) : (
-          <ChevronDown className="h-3.5 w-3.5 text-slate-400" />
+          <ChevronDown className="h-4 w-4 text-[#8E513F]" />
         )}
       </button>
 
       {/* Expanded Content */}
       {expanded && (
-        <div className="border-t border-slate-200/80 px-4 py-3 space-y-3">
+        <div className="border-t border-[#FFE1AC] px-4 py-3.5 space-y-3.5 bg-[#FFF3DF]/60">
           {/* Active Sources */}
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 mb-1.5">
+            <p className="font-display text-xs font-bold uppercase tracking-wider text-[#8D240D] mb-2">
               Active in This Analysis
             </p>
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               {sources
                 .filter((s) => s.status === "active")
                 .map((src, i) => (
-                  <div key={i} className="flex items-start gap-2 text-xs">
-                    <div className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
+                  <div key={i} className="flex items-start gap-2.5 text-xs">
+                    <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#FF990F]" />
                     <div className="min-w-0">
                       <div className="flex items-center gap-1.5">
-                        <span className="font-semibold text-slate-800">{src.name}</span>
+                        <span className="font-bold text-[#8D240D]">{src.name}</span>
                         <a
                           href={src.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-slate-400 hover:text-emerald-600 transition"
+                          className="text-[#8E513F] hover:text-[#B30D08] transition"
                           title="View source"
                         >
                           <ExternalLink className="h-3 w-3" />
                         </a>
                       </div>
-                      <p className="text-[11px] text-slate-500 leading-tight mt-0.5">
+                      <p className="text-[11px] text-[#65230F] leading-snug mt-0.5">
                         {src.role}
                       </p>
                     </div>
@@ -79,34 +79,34 @@ export function DataSourcesBadge({
             </div>
           </div>
 
-          {/* Full Registry (if enabled) */}
+          {/* Full Registry */}
           {showFullRegistry && registrySources.filter((s) => s.status !== "active").length > 0 && (
             <>
-              <hr className="border-slate-200/80" />
+              <hr className="border-[#FFE1AC]" />
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
-                  Evaluation & Future Sources (not yet in production)
+                <p className="font-display text-xs font-bold uppercase tracking-wider text-[#8E513F] mb-2">
+                  Evaluation &amp; Future Sources (Reference Registry)
                 </p>
-                <div className="space-y-1.5">
+                <div className="space-y-2">
                   {registrySources
                     .filter((s) => s.status !== "active")
                     .map((src, i) => (
-                      <div key={i} className="flex items-start gap-2 text-xs">
+                      <div key={i} className="flex items-start gap-2.5 text-xs">
                         <div
-                          className={`mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full ${
+                          className={`mt-1 h-2 w-2 shrink-0 rounded-full ${
                             src.status === "evaluation"
-                              ? "bg-amber-400"
-                              : "bg-slate-300"
+                              ? "bg-[#FFA82F]"
+                              : "bg-[#8E513F]/40"
                           }`}
                         />
                         <div className="min-w-0">
                           <div className="flex items-center gap-1.5">
-                            <span className="font-medium text-slate-600">{src.name}</span>
+                            <span className="font-semibold text-[#8D240D]">{src.name}</span>
                             <span
-                              className={`rounded px-1.5 py-0 text-[9px] font-semibold uppercase ${
+                              className={`rounded-full px-2 py-0 text-[9px] font-bold uppercase ${
                                 src.status === "evaluation"
-                                  ? "bg-amber-50 text-amber-600 border border-amber-200"
-                                  : "bg-slate-100 text-slate-500 border border-slate-200"
+                                  ? "bg-[#FFE1AC] text-[#8D240D] border border-[#F9A83B]"
+                                  : "bg-[#FFF8EC] text-[#8E513F] border border-[#FFE1AC]"
                               }`}
                             >
                               {src.status}
@@ -115,12 +115,12 @@ export function DataSourcesBadge({
                               href={src.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-slate-400 hover:text-slate-600 transition"
+                              className="text-[#8E513F] hover:text-[#B30D08] transition"
                             >
                               <ExternalLink className="h-2.5 w-2.5" />
                             </a>
                           </div>
-                          <p className="text-[10px] text-slate-400 leading-tight mt-0.5">
+                          <p className="text-[10px] text-[#65230F] leading-tight mt-0.5">
                             {src.role}
                           </p>
                         </div>
@@ -132,13 +132,13 @@ export function DataSourcesBadge({
           )}
 
           {/* Link to full registry */}
-          <p className="text-[10px] text-slate-400 pt-1">
-            Full source and license registry:{" "}
+          <p className="text-[10px] font-medium text-[#8E513F] pt-1">
+            Complete licensing decision registry:{" "}
             <a
               href="https://github.com/prathamesh55-MAV239/CaloLens/blob/main/SOURCES.md"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-emerald-600 hover:text-emerald-700 font-medium underline underline-offset-2"
+              className="text-[#B30D08] hover:text-[#8D240D] font-bold underline underline-offset-2"
             >
               SOURCES.md
             </a>

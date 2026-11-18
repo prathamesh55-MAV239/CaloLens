@@ -27,7 +27,6 @@ export function ImageUploader({ onAnalyze, isLoading }: ImageUploaderProps) {
     reader.onload = (e) => {
       const img = new Image();
       img.onload = () => {
-        // Max dimension 1200px to keep payload lightweight and fast
         const maxDim = 1200;
         let { width, height } = img;
         if (width > maxDim || height > maxDim) {
@@ -130,28 +129,28 @@ export function ImageUploader({ onAnalyze, isLoading }: ImageUploaderProps) {
           onDragLeave={handleDrag}
           onDragOver={handleDrag}
           onDrop={handleDrop}
-          className={`relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-8 text-center transition-all ${
+          className={`relative flex flex-col items-center justify-center rounded-3xl border-2 border-dashed p-8 sm:p-12 text-center transition-all ${
             dragActive
-              ? "border-emerald-500 bg-emerald-50/50 scale-[0.99]"
-              : "border-slate-300 bg-white hover:border-emerald-400 hover:bg-slate-50/50"
+              ? "border-[#B30D08] bg-[#FFE1AC]/40 scale-[0.99]"
+              : "border-[#F9A83B]/80 bg-[#FFF3DF] hover:border-[#FF990F] hover:bg-[#FFE1AC]/20 shadow-warm"
           }`}
         >
-          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 shadow-inner">
-            <ImageIcon className="h-8 w-8" />
+          <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-tr from-[#FF990F] to-[#FFA82F] text-white shadow-lg shadow-[#FF990F]/30 ring-4 ring-[#FFE1AC]">
+            <Camera className="h-9 w-9 stroke-[2.2]" />
           </div>
 
-          <h3 className="text-base font-semibold text-slate-800">
-            Snap or upload your meal photo
+          <h3 className="font-display text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#8D240D]">
+            Snap or Upload Your Meal Photo
           </h3>
-          <p className="mt-1 max-w-sm text-xs text-slate-500 leading-relaxed">
-            Drag and drop an image here, or choose an option below. For best accuracy, capture the whole plate clearly under good lighting.
+          <p className="mt-1.5 max-w-md text-xs sm:text-sm text-[#65230F] leading-relaxed">
+            Drag and drop an image here or take a live photo. For best visual estimation, capture the entire plate under clear lighting.
           </p>
 
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <button
               type="button"
               onClick={() => cameraInputRef.current?.click()}
-              className="flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-emerald-700 transition active:scale-95"
+              className="flex items-center gap-2 rounded-full bg-[#B30D08] px-5 py-3 text-xs sm:text-sm font-bold uppercase tracking-wider text-white shadow-md shadow-[#B30D08]/30 hover:bg-[#8D240D] transition active:scale-95"
             >
               <Camera className="h-4 w-4" />
               <span>Take Photo</span>
@@ -159,17 +158,17 @@ export function ImageUploader({ onAnalyze, isLoading }: ImageUploaderProps) {
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50 hover:text-slate-900 transition active:scale-95"
+              className="flex items-center gap-2 rounded-full border border-[#FFE1AC] bg-[#FFF8EC] px-5 py-3 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#8D240D] shadow-warm-sm hover:bg-[#FFE1AC]/40 transition active:scale-95"
             >
-              <Upload className="h-4 w-4 text-slate-500" />
+              <Upload className="h-4 w-4 text-[#FF990F]" />
               <span>Browse Files</span>
             </button>
           </div>
         </div>
       ) : (
-        <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <div className="relative overflow-hidden rounded-3xl border border-[#FFE1AC] bg-[#FFF3DF] p-4 sm:p-5 shadow-warm">
           {previewUrl && (
-            <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-slate-900/5">
+            <div className="relative aspect-video w-full overflow-hidden rounded-2xl bg-[#8D240D]/5 border border-[#FFE1AC]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={previewUrl}
@@ -180,7 +179,7 @@ export function ImageUploader({ onAnalyze, isLoading }: ImageUploaderProps) {
                 type="button"
                 onClick={clearImage}
                 disabled={isLoading}
-                className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-slate-900/70 text-white backdrop-blur hover:bg-slate-900 transition disabled:opacity-50"
+                className="absolute right-3.5 top-3.5 flex h-9 w-9 items-center justify-center rounded-full bg-[#8D240D]/80 text-white backdrop-blur hover:bg-[#8D240D] transition disabled:opacity-50 shadow-md"
                 title="Remove photo"
               >
                 <X className="h-4 w-4" />
@@ -189,49 +188,51 @@ export function ImageUploader({ onAnalyze, isLoading }: ImageUploaderProps) {
           )}
 
           {useSampleData && !previewUrl && (
-            <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-5 text-center">
-              <Sparkles className="mx-auto h-7 w-7 text-emerald-600 mb-2" />
-              <p className="text-sm font-semibold text-emerald-900">
+            <div className="rounded-2xl border border-[#FFE1AC] bg-[#FFF8EC] p-6 text-center shadow-warm-sm">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FFE1AC] text-[#8D240D] mb-3">
+                <Sparkles className="h-6 w-6 text-[#FF990F]" />
+              </div>
+              <h4 className="font-display text-lg font-black uppercase tracking-tight text-[#8D240D]">
                 Sample Mode Activated
-              </p>
-              <p className="text-xs text-emerald-700 mt-1">
-                You can test the complete nutritional estimate & save flow immediately with sample meal data.
+              </h4>
+              <p className="text-xs text-[#65230F] mt-1 max-w-sm mx-auto leading-relaxed">
+                Experience the full nutritional estimation, portion adjustment, and meal saving workflow instantly with sample dish data.
               </p>
             </div>
           )}
         </div>
       )}
 
-      {/* Mode Toggle & Action Bar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
-        <label className="flex items-center gap-2 text-xs text-slate-600 cursor-pointer select-none">
+      {/* Mode Toggle & Primary Action Bar */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3.5 pt-1">
+        <label className="flex items-center gap-2.5 text-xs font-semibold text-[#8D240D] cursor-pointer select-none">
           <input
             type="checkbox"
             checked={useSampleData}
             onChange={(e) => setUseSampleData(e.target.checked)}
-            className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+            className="rounded border-[#F9A83B] text-[#B30D08] focus:ring-[#B30D08] h-4 w-4"
           />
-          <span>Use sample meal data (test without consuming API key)</span>
+          <span>Use sample meal data (test without consuming API credits)</span>
         </label>
 
         <button
           type="button"
           onClick={handleStartAnalysis}
           disabled={isLoading || (!imagePayload && !useSampleData)}
-          className={`flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-white shadow-md transition-all ${
+          className={`flex w-full sm:w-auto items-center justify-center gap-2 rounded-full px-7 py-3.5 text-xs sm:text-sm font-bold uppercase tracking-wider text-white transition-all ${
             isLoading || (!imagePayload && !useSampleData)
-              ? "bg-slate-300 cursor-not-allowed text-slate-500 shadow-none"
-              : "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/20 active:scale-95"
+              ? "bg-[#FFE1AC] text-[#8E513F] cursor-not-allowed shadow-none"
+              : "bg-[#B30D08] hover:bg-[#8D240D] shadow-md shadow-[#B30D08]/30 active:scale-95"
           }`}
         >
           {isLoading ? (
             <>
-              <RefreshCw className="h-4 w-4 animate-spin" />
+              <RefreshCw className="h-4 w-4 animate-spin text-white" />
               <span>Analyzing Meal with AI...</span>
             </>
           ) : (
             <>
-              <Sparkles className="h-4 w-4" />
+              <Sparkles className="h-4 w-4 text-[#FFC84B]" />
               <span>Estimate Nutrition</span>
             </>
           )}
