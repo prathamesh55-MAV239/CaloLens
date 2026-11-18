@@ -1,32 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,700;1,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  --background: #FFF8EC;
+  --foreground: #65230F;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbar */
+/* Headings default to condensed bold display */
+h1, h2, h3, h4, .font-heading {
+  font-family: 'Barlow Condensed', 'Oswald', Impact, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+/* Custom warm scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #FFF3DF;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #F9A83B;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #FF990F;
+}
+
+/* Warm card utility */
+.card-warm {
+  background-color: #FFF3DF;
+  border: 1px solid #FFE1AC;
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 30px -5px rgba(141, 36, 13, 0.06);
+}
+
+.card-cream {
+  background-color: #FFF8EC;
+  border: 1px solid #FFE1AC;
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 30px -5px rgba(141, 36, 13, 0.05);
 }

@@ -53,16 +53,18 @@ export function DailyGoalTracker({
 
   return (
     <>
-      <div className="rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-5 shadow-sm">
+      <div className="rounded-3xl border border-[#FFE1AC] bg-[#FFF3DF] p-5 sm:p-6 shadow-warm">
         {/* Top Header */}
-        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
-              <Target className="h-4 w-4" />
+        <div className="flex items-center justify-between border-b border-[#FFE1AC]/70 pb-3.5">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#FFE1AC] text-[#8D240D] shadow-sm">
+              <Target className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-slate-900">Today&apos;s Nutrition Goal</h2>
-              <p className="text-[11px] text-slate-500">Track daily calorie &amp; macronutrient intake</p>
+              <h2 className="font-display text-lg sm:text-xl font-black uppercase tracking-tight text-[#8D240D]">
+                Today&apos;s Nutrition Goal
+              </h2>
+              <p className="text-xs text-[#8E513F] font-medium">Daily calorie intake &amp; macronutrient targets</p>
             </div>
           </div>
 
@@ -72,43 +74,45 @@ export function DailyGoalTracker({
               setTempGoal(goal);
               setIsEditing(true);
             }}
-            className="flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition"
+            className="flex items-center gap-1.5 rounded-full border border-[#FFE1AC] bg-[#FFF8EC] px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-[#8D240D] hover:bg-[#FFE1AC]/50 transition shadow-warm-sm"
           >
-            <Edit3 className="h-3 w-3" />
+            <Edit3 className="h-3.5 w-3.5 text-[#FF990F]" />
             <span>Edit Goal</span>
           </button>
         </div>
 
         {/* Calories Progress Row */}
-        <div className="mt-3.5 grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-5 items-center">
           {/* Main Calorie Metric */}
           <div className="sm:col-span-1">
             <div className="flex items-baseline justify-between sm:justify-start sm:gap-2">
-              <span className="text-2xl font-extrabold text-slate-900">
+              <span className="font-display text-3xl sm:text-4xl font-black tracking-tight text-[#8D240D]">
                 {todayCalories}
               </span>
-              <span className="text-xs text-slate-500">
+              <span className="text-xs font-bold text-[#8E513F] uppercase tracking-wide">
                 / {goal.targetCalories} kcal
               </span>
             </div>
 
             <div className="mt-1.5 flex items-center gap-1.5 text-xs">
-              <Flame className="h-3.5 w-3.5 text-emerald-600" />
+              <Flame className="h-4 w-4 text-[#FF990F] shrink-0" />
               {remainingCal >= 0 ? (
-                <span className="text-slate-600 font-medium">
-                  <strong>{remainingCal}</strong> kcal remaining today
+                <span className="text-[#65230F] font-medium">
+                  <strong className="font-bold text-[#8D240D]">{remainingCal}</strong> kcal left today
                 </span>
               ) : (
-                <span className="text-rose-600 font-medium">
-                  <strong>{Math.abs(remainingCal)}</strong> kcal over target
+                <span className="text-[#B30D08] font-bold">
+                  +{Math.abs(remainingCal)} kcal over target
                 </span>
               )}
             </div>
 
-            <div className="mt-2.5 h-2 w-full rounded-full bg-slate-100 overflow-hidden">
+            <div className="mt-3 h-2.5 w-full rounded-full bg-[#FFE1AC]/70 overflow-hidden p-0.5">
               <div
                 className={`h-full rounded-full transition-all duration-500 ${
-                  calPercent >= 100 ? "bg-rose-500" : "bg-emerald-500"
+                  calPercent >= 100
+                    ? "bg-[#B30D08]"
+                    : "bg-gradient-to-r from-[#FF990F] to-[#FFA82F]"
                 }`}
                 style={{ width: `${calPercent}%` }}
               />
@@ -116,56 +120,56 @@ export function DailyGoalTracker({
           </div>
 
           {/* Macros Progress Bar Grid */}
-          <div className="sm:col-span-2 grid grid-cols-3 gap-2 sm:gap-3 border-t sm:border-t-0 sm:border-l border-slate-100 pt-3 sm:pt-0 sm:pl-4">
+          <div className="sm:col-span-2 grid grid-cols-3 gap-2.5 sm:gap-3.5 border-t sm:border-t-0 sm:border-l border-[#FFE1AC]/80 pt-3 sm:pt-0 sm:pl-5">
             {/* Protein */}
-            <div className="space-y-1">
-              <div className="flex justify-between text-[11px]">
-                <span className="font-semibold text-slate-600">Protein</span>
-                <span className="text-slate-400">
+            <div className="rounded-2xl bg-[#FFF8EC] p-3 border border-[#FFE1AC]/60 shadow-warm-sm space-y-1.5">
+              <div className="flex justify-between text-xs">
+                <span className="font-display font-bold uppercase tracking-wide text-[#8D240D]">Protein</span>
+                <span className="text-[11px] font-semibold text-[#8E513F]">
                   {todayProtein}/{goal.targetProtein}g
                 </span>
               </div>
-              <div className="h-1.5 w-full rounded-full bg-slate-100 overflow-hidden">
+              <div className="h-2 w-full rounded-full bg-[#FFE1AC]/60 overflow-hidden">
                 <div
-                  className="h-full rounded-full bg-indigo-500 transition-all duration-500"
+                  className="h-full rounded-full bg-[#B30D08] transition-all duration-500"
                   style={{ width: `${proteinPercent}%` }}
                 />
               </div>
-              <span className="text-[10px] text-slate-400">{proteinPercent}%</span>
+              <span className="text-[10px] font-bold text-[#8D240D] block">{proteinPercent}% of goal</span>
             </div>
 
             {/* Carbs */}
-            <div className="space-y-1">
-              <div className="flex justify-between text-[11px]">
-                <span className="font-semibold text-slate-600">Carbs</span>
-                <span className="text-slate-400">
+            <div className="rounded-2xl bg-[#FFF8EC] p-3 border border-[#FFE1AC]/60 shadow-warm-sm space-y-1.5">
+              <div className="flex justify-between text-xs">
+                <span className="font-display font-bold uppercase tracking-wide text-[#8D240D]">Carbs</span>
+                <span className="text-[11px] font-semibold text-[#8E513F]">
                   {todayCarbs}/{goal.targetCarbs}g
                 </span>
               </div>
-              <div className="h-1.5 w-full rounded-full bg-slate-100 overflow-hidden">
+              <div className="h-2 w-full rounded-full bg-[#FFE1AC]/60 overflow-hidden">
                 <div
-                  className="h-full rounded-full bg-amber-500 transition-all duration-500"
+                  className="h-full rounded-full bg-[#FF990F] transition-all duration-500"
                   style={{ width: `${carbsPercent}%` }}
                 />
               </div>
-              <span className="text-[10px] text-slate-400">{carbsPercent}%</span>
+              <span className="text-[10px] font-bold text-[#FF990F] block">{carbsPercent}% of goal</span>
             </div>
 
             {/* Fat */}
-            <div className="space-y-1">
-              <div className="flex justify-between text-[11px]">
-                <span className="font-semibold text-slate-600">Fat</span>
-                <span className="text-slate-400">
+            <div className="rounded-2xl bg-[#FFF8EC] p-3 border border-[#FFE1AC]/60 shadow-warm-sm space-y-1.5">
+              <div className="flex justify-between text-xs">
+                <span className="font-display font-bold uppercase tracking-wide text-[#8D240D]">Fat</span>
+                <span className="text-[11px] font-semibold text-[#8E513F]">
                   {todayFat}/{goal.targetFat}g
                 </span>
               </div>
-              <div className="h-1.5 w-full rounded-full bg-slate-100 overflow-hidden">
+              <div className="h-2 w-full rounded-full bg-[#FFE1AC]/60 overflow-hidden">
                 <div
-                  className="h-full rounded-full bg-rose-500 transition-all duration-500"
+                  className="h-full rounded-full bg-[#FFC84B] transition-all duration-500"
                   style={{ width: `${fatPercent}%` }}
                 />
               </div>
-              <span className="text-[10px] text-slate-400">{fatPercent}%</span>
+              <span className="text-[10px] font-bold text-[#8D240D] block">{fatPercent}% of goal</span>
             </div>
           </div>
         </div>
@@ -173,28 +177,30 @@ export function DailyGoalTracker({
 
       {/* Edit Goal Modal */}
       {isEditing && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-sm">
-          <div className="relative w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#8D240D]/30 p-4 backdrop-blur-sm">
+          <div className="relative w-full max-w-sm rounded-3xl bg-[#FFF8EC] border-2 border-[#FFE1AC] p-6 shadow-2xl">
             <button
               onClick={() => setIsEditing(false)}
-              className="absolute right-4 top-4 rounded-full p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+              className="absolute right-4 top-4 rounded-full p-1.5 text-[#8E513F] hover:bg-[#FFE1AC]/60 hover:text-[#8D240D] transition"
             >
               <X className="h-4 w-4" />
             </button>
 
-            <div className="flex items-center gap-2 mb-4">
-              <div className="rounded-lg bg-emerald-50 p-2 text-emerald-600">
+            <div className="flex items-center gap-2.5 mb-4">
+              <div className="rounded-2xl bg-[#FFE1AC] p-2.5 text-[#8D240D]">
                 <TrendingUp className="h-5 w-5" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-slate-900">Set Daily Goals</h3>
-                <p className="text-xs text-slate-500">Configure your daily intake targets</p>
+                <h3 className="font-display text-lg font-black uppercase tracking-tight text-[#8D240D]">
+                  Set Daily Nutrition Goals
+                </h3>
+                <p className="text-xs text-[#8E513F]">Configure your daily calorie &amp; macro targets</p>
               </div>
             </div>
 
-            <form onSubmit={handleSaveGoal} className="space-y-3 text-xs">
+            <form onSubmit={handleSaveGoal} className="space-y-3.5 text-xs">
               <div>
-                <label className="font-semibold text-slate-700 block mb-1">
+                <label className="font-bold text-[#8D240D] uppercase tracking-wider block mb-1">
                   Daily Calories (kcal)
                 </label>
                 <input
@@ -206,14 +212,14 @@ export function DailyGoalTracker({
                   onChange={(e) =>
                     setTempGoal({ ...tempGoal, targetCalories: Number(e.target.value) })
                   }
-                  className="w-full rounded-xl border border-slate-300 p-2.5 text-sm focus:border-emerald-500 focus:outline-none"
+                  className="w-full rounded-xl border border-[#FFE1AC] bg-[#FFF3DF] p-2.5 text-sm font-bold text-[#8D240D] focus:border-[#FF990F] focus:outline-none"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-3 gap-2">
                 <div>
-                  <label className="font-semibold text-slate-700 block mb-1">
+                  <label className="font-bold text-[#8D240D] uppercase tracking-wider block mb-1">
                     Protein (g)
                   </label>
                   <input
@@ -224,13 +230,13 @@ export function DailyGoalTracker({
                     onChange={(e) =>
                       setTempGoal({ ...tempGoal, targetProtein: Number(e.target.value) })
                     }
-                    className="w-full rounded-xl border border-slate-300 p-2 text-xs focus:border-emerald-500 focus:outline-none"
+                    className="w-full rounded-xl border border-[#FFE1AC] bg-[#FFF3DF] p-2 text-xs font-bold text-[#8D240D] focus:border-[#FF990F] focus:outline-none"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="font-semibold text-slate-700 block mb-1">
+                  <label className="font-bold text-[#8D240D] uppercase tracking-wider block mb-1">
                     Carbs (g)
                   </label>
                   <input
@@ -241,13 +247,13 @@ export function DailyGoalTracker({
                     onChange={(e) =>
                       setTempGoal({ ...tempGoal, targetCarbs: Number(e.target.value) })
                     }
-                    className="w-full rounded-xl border border-slate-300 p-2 text-xs focus:border-emerald-500 focus:outline-none"
+                    className="w-full rounded-xl border border-[#FFE1AC] bg-[#FFF3DF] p-2 text-xs font-bold text-[#8D240D] focus:border-[#FF990F] focus:outline-none"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="font-semibold text-slate-700 block mb-1">
+                  <label className="font-bold text-[#8D240D] uppercase tracking-wider block mb-1">
                     Fat (g)
                   </label>
                   <input
@@ -258,23 +264,23 @@ export function DailyGoalTracker({
                     onChange={(e) =>
                       setTempGoal({ ...tempGoal, targetFat: Number(e.target.value) })
                     }
-                    className="w-full rounded-xl border border-slate-300 p-2 text-xs focus:border-emerald-500 focus:outline-none"
+                    className="w-full rounded-xl border border-[#FFE1AC] bg-[#FFF3DF] p-2 text-xs font-bold text-[#8D240D] focus:border-[#FF990F] focus:outline-none"
                     required
                   />
                 </div>
               </div>
 
-              <div className="mt-5 flex gap-2 pt-2">
+              <div className="mt-5 flex gap-2.5 pt-2">
                 <button
                   type="button"
                   onClick={() => setIsEditing(false)}
-                  className="flex-1 rounded-xl border border-slate-300 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 transition"
+                  className="flex-1 rounded-full border border-[#FFE1AC] bg-[#FFF3DF] py-2.5 font-bold uppercase tracking-wider text-[#8D240D] hover:bg-[#FFE1AC] transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-emerald-600 py-2.5 font-semibold text-white hover:bg-emerald-700 transition"
+                  className="flex-1 flex items-center justify-center gap-1.5 rounded-full bg-[#B30D08] py-2.5 font-bold uppercase tracking-wider text-white shadow-md shadow-[#B30D08]/30 hover:bg-[#8D240D] transition"
                 >
                   <Check className="h-4 w-4" />
                   <span>Save Goal</span>
