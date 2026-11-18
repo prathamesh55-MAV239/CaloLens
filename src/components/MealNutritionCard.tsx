@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import { MealAnalysisResult } from "@/types/meal";
-import { Bookmark, Check, Flame, Info, RotateCcw, Sparkles } from "lucide-react";
+import { Bookmark, Check, Flame, Info, RotateCcw, Sparkles, ExternalLink } from "lucide-react";
 import { DisclaimerBanner } from "./DisclaimerBanner";
+import { DataSourcesBadge } from "./DataSourcesBadge";
 
 interface MealNutritionCardProps {
   analysis: MealAnalysisResult;
@@ -196,22 +197,47 @@ export function MealNutritionCard({
             {items.map((item, idx) => (
               <div
                 key={idx}
-                className="flex items-center justify-between p-3 text-xs hover:bg-white transition"
+                className="p-3 text-xs hover:bg-white transition"
               >
-                <div>
-                  <p className="font-semibold text-slate-800">{item.name}</p>
-                  <p className="text-[11px] text-slate-500">
-                    Est. Portion: {item.portion}
-                  </p>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-semibold text-slate-800">{item.name}</p>
+                    <p className="text-[11px] text-slate-500">
+                      Est. Portion: {item.portion}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-bold text-slate-900">
+                      ~{item.calories} <span className="font-normal text-slate-500 text-[10px]">kcal</span>
+                    </p>
+                    <p className="text-[10px] text-slate-400">
+                      P: {item.macros?.protein || 0}g • C: {item.macros?.carbs || 0}g • F: {item.macros?.fat || 0}g
+                    </p>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <p className="font-bold text-slate-900">
-                    ~{item.calories} <span className="font-normal text-slate-500 text-[10px]">kcal</span>
-                  </p>
-                  <p className="text-[10px] text-slate-400">
-                    P: {item.macros?.protein || 0}g • C: {item.macros?.carbs || 0}g • F: {item.macros?.fat || 0}g
-                  </p>
-                </div>
+
+                {/* USDA Reference Cross-Check */}
+                {item.usdaRef && (
+                  <div className="mt-1.5 flex items-center gap-2 rounded-md bg-blue-50/70 px-2.5 py-1.5 border border-blue-100">
+                    <span className="text-[10px] text-blue-700 leading-tight">
+                      <strong>USDA Ref:</strong>{" "}
+                      {item.usdaRef.description} — {item.usdaRef.per100g.calories ?? "–"} kcal,{" "}
+                      P: {item.usdaRef.per100g.protein ?? "–"}g,{" "}
+                      C: {item.usdaRef.per100g.carbs ?? "–"}g,{" "}
+                      F: {item.usdaRef.per100g.fat ?? "–"}g{" "}
+                      <span className="text-blue-500">(per 100g)</span>
+                    </span>
+                    <a
+                      href={item.usdaRef.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="shrink-0 text-blue-500 hover:text-blue-700 transition"
+                      title="View on USDA FoodData Central"
+                    >
+                      <ExternalLink className="h-3 w-3" />
+                    </a>
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -232,6 +258,12 @@ export function MealNutritionCard({
           ))}
         </div>
       )}
+
+      {/* Data Sources Attribution */}
+      <DataSourcesBadge
+        activeSources={analysis.dataSources}
+        showFullRegistry={true}
+      />
 
       {/* Mandatory Disclaimer */}
       <div className="pt-2">

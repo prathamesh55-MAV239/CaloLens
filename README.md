@@ -18,8 +18,10 @@
 - 📸 **Smart Image & Camera Capture**: Upload or take live food photos on mobile or desktop with automatic client-side image compression.
 - 🧪 **Sample Testing Mode**: Test the complete estimation, saving, and history workflow instantly without consuming API credits.
 - ⚡ **AI Vision Analysis**: Identifies dishes, portion estimates, calorie approximations, and macronutrients (Protein, Carbs, Fat, Fiber) powered by Google Gemini Vision.
+- 🔬 **USDA Cross-Reference**: Optionally cross-checks AI estimates against USDA FoodData Central nutritional reference data (per 100g values) for grounded accuracy.
 - 💾 **Local-First Meal History**: Save meals and review a chronological log of past dishes, nutritional breakdowns, and timestamps.
 - 📱 **Responsive Mobile-First UI**: Optimized for phones and desktops alike with quick navigation tabs and full item details.
+- 📊 **Data Sources Transparency**: In-app collapsible panel showing all active models and data sources, with links to full source registry.
 
 ---
 
@@ -43,10 +45,14 @@ Copy `.env.example` to `.env.local`:
 cp .env.example .env.local
 ```
 
-Edit `.env.local` and add your Gemini API key:
+Edit `.env.local` and add your API keys:
 ```env
-# Get your API key from Google AI Studio: https://aistudio.google.com/app/apikey
+# Get your Gemini API key from Google AI Studio: https://aistudio.google.com/app/apikey
 GEMINI_API_KEY=your_actual_gemini_api_key
+
+# (Optional) USDA FoodData Central API key for cross-referencing nutrition data
+# Get your key from: https://fdc.nal.usda.gov/api-key-signup.html
+USDA_API_KEY=your_usda_api_key
 ```
 
 > **Security Note:** Never commit `.env.local` or real API keys to Git. Keep real secrets in your deployment hosting provider's settings (e.g., Vercel, Netlify).
@@ -85,21 +91,25 @@ Make a small change ➔ Test locally ➔ Open a PR ➔ Preview deployment ➔ Me
 
 ```
 CaloLens/
+├── SOURCES.md                         # Data source & license registry
 ├── src/
 │   ├── app/
-│   │   ├── api/analyze-meal/route.ts  # Server-side Gemini Vision API route
+│   │   ├── api/analyze-meal/route.ts  # Server-side Gemini Vision + USDA API route
 │   │   ├── globals.css                # Tailwind styling
 │   │   ├── layout.tsx                 # Root layout with metadata
 │   │   └── page.tsx                   # Main page orchestrating scan & history
 │   ├── components/
+│   │   ├── DataSourcesBadge.tsx       # Collapsible data source attribution panel
 │   │   ├── DisclaimerBanner.tsx       # Mandatory non-medical advice banners
 │   │   ├── ImageUploader.tsx          # Camera / photo upload & sample mode
 │   │   ├── MealHistory.tsx            # Meal log, details modal & deletion
-│   │   ├── MealNutritionCard.tsx      # Calories, macro bars & ingredient table
+│   │   ├── MealNutritionCard.tsx      # Calories, macro bars, USDA refs & ingredient table
 │   │   └── Navbar.tsx                 # Sticky navigation header
 │   ├── lib/
+│   │   ├── dataSources.ts             # All models & datasets from SOURCES.md
 │   │   ├── mockData.ts                # Offline sample meal dataset
-│   │   └── storage.ts                 # Local storage persistence
+│   │   ├── storage.ts                 # Local storage persistence
+│   │   └── usda.ts                    # USDA FoodData Central API client
 │   └── types/
 │       └── meal.ts                    # TypeScript domain definitions
 ├── .env.example                       # Environment template
@@ -108,6 +118,32 @@ CaloLens/
 ├── tailwind.config.ts                 # Tailwind configuration
 └── README.md                          # Documentation
 ```
+
+---
+
+## 🔬 Data Sources & Models
+
+CaloLens uses a structured source registry ([`SOURCES.md`](SOURCES.md)) to track all models, datasets, and data providers. Each source has a documented license status and MVP approval decision.
+
+### Active in MVP
+
+| Source | Role | Status |
+|---|---|---|
+| **Google Gemini Vision** (`gemini-1.5-flash`) | Primary AI model for food recognition, portion estimation, and nutritional breakdown | ✅ Active |
+| **USDA FoodData Central** | Government nutrition reference database for cross-referencing calorie and macronutrient estimates | ✅ Active (Approved) |
+
+### Evaluation & Future Sources
+
+| Source | Role | Status |
+|---|---|---|
+| Food-101 | Dish recognition baseline (101 categories) | 🔬 Evaluation |
+| UECFood-256 | Japanese dish recognition benchmark (256 categories) | 🔬 Evaluation |
+| Nutrition5k | Calorie/macronutrient benchmark | 🔬 Evaluation |
+| Open Food Facts | OCR/layout experiments for packaged food labels | 🔬 Evaluation |
+| January/food-vision-v1 | Baseline food vision model | 🔬 Evaluation |
+| AI4Food-NutritionDB, OmniFood8K, FooDD | Future benchmarks | ⏸️ Hold |
+
+> See [`SOURCES.md`](SOURCES.md) for the full registry with links, license terms, and legal review requirements.
 
 ---
 

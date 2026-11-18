@@ -5,11 +5,33 @@ export interface Macronutrients {
   fiber?: number;  // in grams
 }
 
+export interface USDAReference {
+  fdcId: number;
+  description: string;
+  per100g: {
+    calories: number | null;
+    protein: number | null;
+    fat: number | null;
+    carbs: number | null;
+    fiber: number | null;
+  };
+  source: string;
+  sourceUrl: string;
+}
+
 export interface FoodItemEstimate {
   name: string;
   portion: string;
   calories: number;
   macros: Macronutrients;
+  usdaRef?: USDAReference;
+}
+
+export interface DataSourceAttribution {
+  name: string;
+  url: string;
+  role: string;
+  status: "active" | "evaluation" | "hold";
 }
 
 export interface MealAnalysisResult {
@@ -22,6 +44,7 @@ export interface MealAnalysisResult {
   dietaryTags?: string[];
   disclaimer: string;
   analyzedAt: string;
+  dataSources?: DataSourceAttribution[];
 }
 
 export interface SavedMealRecord extends MealAnalysisResult {

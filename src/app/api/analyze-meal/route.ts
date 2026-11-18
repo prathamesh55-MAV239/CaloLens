@@ -1,12 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { MealAnalysisResult } from "@/types/meal";
+import { lookupUSDAReferences } from "@/lib/usda";
+import { MVP_ATTRIBUTION_SOURCES } from "@/lib/dataSources";
 
 export const runtime = "nodejs";
 
 const PROMPT_INSTRUCTIONS = `
 You are an expert culinary and nutritional estimation assistant for CaloLens.
 Analyze the provided image of a meal or food plate and provide an estimated nutritional breakdown.
+
+Your estimates should be grounded in standard nutritional reference data such as the
+USDA FoodData Central database (https://fdc.nal.usda.gov). Use realistic per-100g values
+from standard food composition tables when estimating calorie and macronutrient content,
+and scale by your best estimate of the visible portion size.
 
 Rules:
 1. If the image DOES NOT show food or a beverage, return:
@@ -86,6 +93,41 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Parse the Gemini response into typed items
+    const items = Array.isArray(parsed.items)
+      ? parsed.items.map((it: any) => ({
+          name: it.name || "Item",
+          portion: it.portion || "Standard serving",
+          calories: Number(it.calories) || 0,
+          macros: {
+            protein: Number(it.macros?.protein) || 0,
+            carbs: Number(it.macros?.carbs) || 0,
+            fat: Number(it.macros?.fat) || 0,
+          },
+        }))
+      : [];
+
+    // ── USDA FoodData Central cross-reference (approved source) ──────────
+    // If a USDA API key is configured, look up each detected food item
+    // to attach reference nutrition data (per 100g) from the USDA database.
+    const usdaApiKey = process.env.USDA_API_KEY;
+    if (usdaApiKey && items.length > 0) {
+      try {
+        const foodNames = items.map((it: any) => it.name);
+        const usdaRefs = await lookupUSDAReferences(foodNames, usdaApiKey);
+
+        for (const item of items) {
+          const ref = usdaRefs.get(item.name);
+          if (ref) {
+            item.usdaRef = ref;
+          }
+        }
+      } catch (usdaError) {
+        // USDA lookup is best-effort; don't fail the whole analysis
+        console.warn("USDA reference lookup failed:", usdaError);
+      }
+    }
+
     const analysisResult: MealAnalysisResult = {
       mealName: parsed.mealName || "Estimated Meal",
       summary: parsed.summary || "",
@@ -96,24 +138,14 @@ export async function POST(req: NextRequest) {
         fat: Number(parsed.macros?.fat) || 0,
         fiber: Number(parsed.macros?.fiber) || 0,
       },
-      items: Array.isArray(parsed.items)
-        ? parsed.items.map((it: any) => ({
-            name: it.name || "Item",
-            portion: it.portion || "Standard serving",
-            calories: Number(it.calories) || 0,
-            macros: {
-              protein: Number(it.macros?.protein) || 0,
-              carbs: Number(it.macros?.carbs) || 0,
-              fat: Number(it.macros?.fat) || 0,
-            },
-          }))
-        : [],
+      items,
       confidence: (parsed.confidence as "High" | "Medium" | "Low") || "Medium",
       dietaryTags: parsed.dietaryTags || [],
       disclaimer:
         parsed.disclaimer ||
         "Calorie and nutritional values are AI-based visual approximations. Actual values vary based on cooking methods, dressings, and exact portion size. Not medical advice.",
       analyzedAt: new Date().toISOString(),
+      dataSources: MVP_ATTRIBUTION_SOURCES,
     };
 
     return NextResponse.json(analysisResult);
