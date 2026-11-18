@@ -13,7 +13,7 @@ import { DataSourceAttribution } from "@/types/meal";
 
 export const ACTIVE_SOURCES: DataSourceAttribution[] = [
   {
-    name: "Google Gemini Vision (gemini-1.5-flash)",
+    name: "Google Gemini Vision (gemini-2.5-flash-lite / gemini-3.8-flash)",
     url: "https://ai.google.dev/gemini-api/docs",
     role: "Primary AI model for food recognition, portion estimation, and nutritional breakdown from meal photos",
     status: "active",

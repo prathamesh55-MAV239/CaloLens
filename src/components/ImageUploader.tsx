@@ -53,6 +53,7 @@ export function ImageUploader({ onAnalyze, isLoading }: ImageUploaderProps) {
           base64: base64Data,
           mimeType: "image/jpeg",
         });
+        setUseSampleData(false); // Always switch to live photo analysis when an image is selected
       };
       img.src = e.target?.result as string;
     };
@@ -92,15 +93,16 @@ export function ImageUploader({ onAnalyze, isLoading }: ImageUploaderProps) {
   };
 
   const handleStartAnalysis = () => {
+    // If the user provided a real photo, ALWAYS run live AI analysis on that photo!
+    if (imagePayload) {
+      onAnalyze(imagePayload, false);
+      return;
+    }
     if (useSampleData) {
       onAnalyze({ base64: "", mimeType: "image/jpeg" }, true);
       return;
     }
-    if (!imagePayload) {
-      alert("Please take a photo or select an image first.");
-      return;
-    }
-    onAnalyze(imagePayload, false);
+    alert("Please take a photo or select a food image first.");
   };
 
   return (
@@ -233,7 +235,9 @@ export function ImageUploader({ onAnalyze, isLoading }: ImageUploaderProps) {
           ) : (
             <>
               <Sparkles className="h-4 w-4 text-[#FFC84B]" />
-              <span>Estimate Nutrition</span>
+              <span>
+                {imagePayload ? "Analyze This Meal (Live AI)" : "Estimate Nutrition"}
+              </span>
             </>
           )}
         </button>
