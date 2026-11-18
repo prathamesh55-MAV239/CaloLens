@@ -5,9 +5,27 @@ import { Navbar } from "@/components/Navbar";
 import { ImageUploader } from "@/components/ImageUploader";
 import { MealNutritionCard } from "@/components/MealNutritionCard";
 import { MealHistory } from "@/components/MealHistory";
-import { MealAnalysisResult, SavedMealRecord } from "@/types/meal";
+import { DailyGoalTracker } from "@/components/DailyGoalTracker";
+import {
+  MealAnalysisResult,
+  SavedMealRecord,
+  DailyNutritionGoal,
+  MealType,
+  FoodItemEstimate,
+  Macronutrients,
+} from "@/types/meal";
 import { SAMPLE_MEAL_ANALYSIS } from "@/lib/mockData";
-import { getSavedMeals, saveMeal, deleteMeal, clearAllMeals } from "@/lib/storage";
+import {
+  getSavedMeals,
+  saveMeal,
+  deleteMeal,
+  clearAllMeals,
+  updateMeal,
+  getDailyGoal,
+  saveDailyGoal,
+  getTodayStats,
+  inferMealType,
+} from "@/lib/storage";
 import { AlertTriangle } from "lucide-react";
 
 export default function Home() {
@@ -15,14 +33,28 @@ export default function Home() {
   const [currentAnalysis, setCurrentAnalysis] = useState<MealAnalysisResult | null>(null);
   const [currentImagePreview, setCurrentImagePreview] = useState<string | null>(null);
   const [savedMeals, setSavedMeals] = useState<SavedMealRecord[]>([]);
+  const [dailyGoal, setDailyGoal] = useState<DailyNutritionGoal>({
+    targetCalories: 2000,
+    targetProtein: 140,
+    targetCarbs: 220,
+    targetFat: 65,
+  });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSavedCurrent, setIsSavedCurrent] = useState<boolean>(false);
 
-  // Load saved meals from local storage on mount
+  // Load saved meals and goal from local storage on mount
   useEffect(() => {
     setSavedMeals(getSavedMeals());
+    setDailyGoal(getDailyGoal());
   }, []);
+
+  const todayStats = getTodayStats(savedMeals);
+
+  const handleUpdateGoal = (newGoal: DailyNutritionGoal) => {
+    saveDailyGoal(newGoal);
+    setDailyGoal(newGoal);
+  };
 
   const handleAnalyze = async (
     imageData: { base64: string; mimeType: string },
@@ -33,7 +65,6 @@ export default function Home() {
     setIsSavedCurrent(false);
 
     if (useMock) {
-      // Simulate real latency for responsive feel
       setTimeout(() => {
         setCurrentAnalysis(SAMPLE_MEAL_ANALYSIS);
         setCurrentImagePreview(null);
@@ -71,11 +102,24 @@ export default function Home() {
     }
   };
 
-  const handleSaveMeal = () => {
+  const handleSaveMeal = (editedData: {
+    mealName: string;
+    mealType: MealType;
+    estimatedCalories: number;
+    macros: Macronutrients;
+    items: FoodItemEstimate[];
+    userNotes?: string;
+  }) => {
     if (!currentAnalysis) return;
 
     const newRecord: SavedMealRecord = {
       ...currentAnalysis,
+      mealName: editedData.mealName,
+      mealType: editedData.mealType,
+      estimatedCalories: editedData.estimatedCalories,
+      macros: editedData.macros,
+      items: editedData.items,
+      userNotes: editedData.userNotes,
       id: "meal_" + Date.now(),
       imageUrl: currentImagePreview || undefined,
       savedAt: new Date().toISOString(),
@@ -96,6 +140,11 @@ export default function Home() {
     setSavedMeals([]);
   };
 
+  const handleUpdateNotes = (id: string, notes: string) => {
+    const updated = updateMeal(id, { userNotes: notes });
+    setSavedMeals(updated);
+  };
+
   const handleResetScan = () => {
     setCurrentAnalysis(null);
     setCurrentImagePreview(null);
@@ -111,9 +160,19 @@ export default function Home() {
         savedCount={savedMeals.length}
       />
 
-      <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-6 sm:px-6">
+      <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-6 sm:px-6 space-y-6">
+        {/* Daily Goal Progress Card */}
+        <DailyGoalTracker
+          goal={dailyGoal}
+          todayCalories={todayStats.totalCalories}
+          todayProtein={todayStats.totalProtein}
+          todayCarbs={todayStats.totalCarbs}
+          todayFat={todayStats.totalFat}
+          onUpdateGoal={handleUpdateGoal}
+        />
+
         {errorMessage && (
-          <div className="mb-6 flex items-start gap-3 rounded-2xl border border-rose-200 bg-rose-50/90 p-4 text-rose-800 shadow-sm">
+          <div className="flex items-start gap-3 rounded-2xl border border-rose-200 bg-rose-50/90 p-4 text-rose-800 shadow-sm">
             <AlertTriangle className="h-5 w-5 shrink-0 text-rose-600 mt-0.5" />
             <div className="text-xs">
               <p className="font-semibold text-rose-900">Analysis Error</p>
@@ -153,6 +212,7 @@ export default function Home() {
             onDeleteMeal={handleDeleteMeal}
             onClearAll={handleClearAll}
             onNavigateToScan={() => setActiveTab("scan")}
+            onUpdateNotes={handleUpdateNotes}
           />
         )}
       </main>

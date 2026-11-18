@@ -29,6 +29,7 @@ Rules:
 - macros: { protein: number (g), carbs: number (g), fat: number (g), fiber: number (g) }
 - items: array of detected items, each with { name: string, portion: string (e.g. 'approx. 150g' or '1 cup'), calories: number, macros: { protein: number, carbs: number, fat: number } }
 - confidence: "High" | "Medium" | "Low"
+- mealType: suggest "Breakfast", "Lunch", "Dinner", or "Snack" based on typical meal composition
 - dietaryTags: array of relevant tags like ["High Protein", "Vegetarian", "Keto", etc.]
 - disclaimer: "Calorie and nutritional values are AI-based visual approximations. Actual values vary based on cooking methods, dressings, and exact portion size. Not medical advice."
 
@@ -140,6 +141,9 @@ export async function POST(req: NextRequest) {
       },
       items,
       confidence: (parsed.confidence as "High" | "Medium" | "Low") || "Medium",
+      mealType: ["Breakfast", "Lunch", "Dinner", "Snack"].includes(parsed.mealType)
+        ? parsed.mealType
+        : undefined,
       dietaryTags: parsed.dietaryTags || [],
       disclaimer:
         parsed.disclaimer ||

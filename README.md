@@ -18,8 +18,11 @@
 - 📸 **Smart Image & Camera Capture**: Upload or take live food photos on mobile or desktop with automatic client-side image compression.
 - 🧪 **Sample Testing Mode**: Test the complete estimation, saving, and history workflow instantly without consuming API credits.
 - ⚡ **AI Vision Analysis**: Identifies dishes, portion estimates, calorie approximations, and macronutrients (Protein, Carbs, Fat, Fiber) powered by Google Gemini Vision.
+- ✏️ **Manual Meal & Portion Editing**: Tweak identified dish titles, add or remove ingredients, and adjust calories/macros before saving with automatic total recalculation.
+- 🎯 **Daily Nutrition Goals Tracker**: Set personal daily targets for calories, protein, carbs, and fat with real-time remaining calorie indicators.
+- 🏷️ **Meal Categorization**: Categorize entries into Breakfast, Lunch, Dinner, and Snack with date-grouped timeline views.
 - 🔬 **USDA Cross-Reference**: Optionally cross-checks AI estimates against USDA FoodData Central nutritional reference data (per 100g values) for grounded accuracy.
-- 💾 **Local-First Meal History**: Save meals and review a chronological log of past dishes, nutritional breakdowns, and timestamps.
+- 💾 **Local-First Meal History**: Save meals and review a chronological log of past dishes, nutritional breakdowns, personal notes, and timestamps.
 - 📱 **Responsive Mobile-First UI**: Optimized for phones and desktops alike with quick navigation tabs and full item details.
 - 📊 **Data Sources Transparency**: In-app collapsible panel showing all active models and data sources, with links to full source registry.
 

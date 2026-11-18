@@ -5,6 +5,8 @@ export interface Macronutrients {
   fiber?: number;  // in grams
 }
 
+export type MealType = "Breakfast" | "Lunch" | "Dinner" | "Snack";
+
 export interface USDAReference {
   fdcId: number;
   description: string;
@@ -20,6 +22,7 @@ export interface USDAReference {
 }
 
 export interface FoodItemEstimate {
+  id?: string;
   name: string;
   portion: string;
   calories: number;
@@ -41,6 +44,7 @@ export interface MealAnalysisResult {
   macros: Macronutrients;
   items: FoodItemEstimate[];
   confidence: "High" | "Medium" | "Low";
+  mealType?: MealType;
   dietaryTags?: string[];
   disclaimer: string;
   analyzedAt: string;
@@ -52,4 +56,12 @@ export interface SavedMealRecord extends MealAnalysisResult {
   imageUrl?: string; // base64 or blob URL
   savedAt: string;
   userNotes?: string;
+  mealType: MealType;
+}
+
+export interface DailyNutritionGoal {
+  targetCalories: number;
+  targetProtein: number;
+  targetCarbs: number;
+  targetFat: number;
 }
